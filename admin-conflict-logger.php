@@ -9,7 +9,6 @@
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: admin-conflict-logger
- * Domain Path: /languages
  * Requires at least: 5.8
  * Requires PHP: 7.4
  */
@@ -77,7 +76,7 @@ class Admin_Conflict_Logger {
      * Initialize plugin
      */
     public function init() {
-        load_plugin_textdomain('admin-conflict-logger', false, dirname(ACL_PLUGIN_BASENAME) . '/languages');
+        // Translations are loaded automatically by WordPress.org
     }
 
     /**
