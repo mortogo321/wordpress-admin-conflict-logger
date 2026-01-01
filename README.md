@@ -26,11 +26,7 @@ Admin Conflict Logger automatically captures JavaScript errors and identifies wh
 
 ## Screenshots
 
-### Dashboard
-View error statistics and identify problematic plugins at a glance.
-
-### Error Log
-Detailed error information with stack traces and suspected plugin detection.
+*Screenshots coming soon*
 
 ## Installation
 
