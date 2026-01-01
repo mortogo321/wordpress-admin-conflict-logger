@@ -211,19 +211,19 @@ class Admin_Conflict_Logger {
 
         $error_data = [
             'timestamp' => current_time('mysql'),
-            'message' => sanitize_text_field($_POST['message'] ?? ''),
-            'source' => esc_url_raw($_POST['source'] ?? ''),
+            'message' => sanitize_text_field(wp_unslash($_POST['message'] ?? '')),
+            'source' => esc_url_raw(wp_unslash($_POST['source'] ?? '')),
             'line' => absint($_POST['line'] ?? 0),
             'column' => absint($_POST['column'] ?? 0),
-            'stack' => sanitize_textarea_field($_POST['stack'] ?? ''),
-            'page_url' => esc_url_raw($_POST['pageUrl'] ?? ''),
-            'page_hook' => sanitize_text_field($_POST['pageHook'] ?? ''),
-            'is_admin' => (bool) ($_POST['isAdmin'] ?? false),
-            'user_agent' => sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? ''),
+            'stack' => sanitize_textarea_field(wp_unslash($_POST['stack'] ?? '')),
+            'page_url' => esc_url_raw(wp_unslash($_POST['pageUrl'] ?? '')),
+            'page_hook' => sanitize_text_field(wp_unslash($_POST['pageHook'] ?? '')),
+            'is_admin' => !empty($_POST['isAdmin']),
+            'user_agent' => sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'] ?? '')),
             'active_plugins' => $this->get_active_plugins_info(),
             'suspected_plugin' => $this->detect_suspected_plugin(
-                sanitize_text_field($_POST['source'] ?? ''),
-                sanitize_textarea_field($_POST['stack'] ?? '')
+                sanitize_text_field(wp_unslash($_POST['source'] ?? '')),
+                sanitize_textarea_field(wp_unslash($_POST['stack'] ?? ''))
             ),
         ];
 
@@ -307,7 +307,7 @@ class Admin_Conflict_Logger {
             wp_send_json_error(['message' => 'Unauthorized']);
         }
 
-        $log_id = sanitize_text_field($_POST['log_id'] ?? '');
+        $log_id = sanitize_text_field(wp_unslash($_POST['log_id'] ?? ''));
         $logs = get_option(self::OPTION_NAME, []);
 
         $logs = array_filter($logs, function($log) use ($log_id) {

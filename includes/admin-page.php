@@ -110,7 +110,7 @@ if (!defined('ABSPATH')) {
                                 <?php else : ?>
                                     <span class="acl-location acl-frontend"><?php esc_html_e('Frontend', 'admin-conflict-logger'); ?></span>
                                 <?php endif; ?>
-                                <code class="acl-page-hook"><?php echo esc_html($log['page_hook'] ?: parse_url($log['page_url'], PHP_URL_PATH)); ?></code>
+                                <code class="acl-page-hook"><?php echo esc_html($log['page_hook'] ?: wp_parse_url($log['page_url'], PHP_URL_PATH)); ?></code>
                             </td>
                             <td class="column-actions">
                                 <button type="button" class="button-link acl-delete-log" data-log-id="<?php echo esc_attr($log['id']); ?>">
