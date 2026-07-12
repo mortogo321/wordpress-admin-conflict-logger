@@ -1,64 +1,37 @@
 # Admin Conflict Logger
 
-Automatically logs JavaScript errors with plugin context to help identify conflicts quickly.
+A WordPress plugin that demonstrates hook-based plugin architecture, secure AJAX handling, and lightweight client-side instrumentation — it captures JavaScript errors in wp-admin and on the frontend and identifies which active plugin (or theme) is the likely source.
 
-![WordPress Plugin Version](https://img.shields.io/badge/version-1.0.0-blue)
-![WordPress](https://img.shields.io/badge/WordPress-5.8%2B-blue)
-![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple)
-![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)
+## What's Inside
 
-## The Problem
+- Singleton plugin class wiring into WordPress `init`, `admin_menu`, `admin_enqueue_scripts`, `wp_enqueue_scripts`, and `wp_ajax_*` hooks
+- Global `error` / `unhandledrejection` listener (`assets/js/error-logger.js`) with a debounced send queue, in-flight deduplication, and a filter list for non-actionable noise (e.g. `ResizeObserver loop`, `ChunkLoadError`)
+- AJAX endpoints for logging, clearing, and deleting entries, each protected with `check_ajax_referer` nonce checks and `current_user_can('manage_options')` capability checks
+- Heuristic "suspected plugin" detection that matches the error's source/stack trace against active plugin folder names and the active theme's stylesheet
+- Admin dashboard (`includes/admin-page.php`) showing total error count, a per-plugin breakdown, a sortable log table, and a stack-trace modal
+- Storage via a single WordPress option (capped at the most recent 100 entries) — no external services, no schema changes
 
-33% of WordPress users say troubleshooting plugin conflicts takes too long. When something breaks, you have to deactivate plugins one-by-one to find the culprit.
+## Tech Stack
 
-## The Solution
+- PHP 7.4+ targeting the WordPress Plugin API (WordPress 5.8+)
+- Vanilla JavaScript for error capture; jQuery (bundled with WordPress core) for the admin UI
+- WordPress Options API for persistence
+- No build step or package manager — plain PHP/JS/CSS enqueued via `wp_enqueue_script` / `wp_enqueue_style`
 
-Admin Conflict Logger automatically captures JavaScript errors and identifies which plugin is likely causing the issue.
+## Quickstart
 
-## Features
+1. Copy this folder into `wp-content/plugins/admin-conflict-logger` on a local WordPress install
+2. Activate **Admin Conflict Logger** from the Plugins screen
+3. Open **Conflict Logger** in the wp-admin menu — JavaScript errors are captured automatically from that point on, in wp-admin for all users and on the frontend for logged-in administrators
 
-- **Automatic Error Logging** - No configuration needed, just activate
-- **Smart Plugin Detection** - Identifies the likely culprit from error sources
-- **Admin & Frontend Monitoring** - Catches errors everywhere
-- **Clean Dashboard** - View all errors with filtering and statistics
-- **Performance Focused** - Minimal footprint, debounced logging
-- **Privacy Friendly** - All data stored locally, no external services
+## Structure
 
-## Screenshots
-
-*Screenshots coming soon*
-
-## Installation
-
-### From GitHub
-1. Download the latest release
-2. Upload to `/wp-content/plugins/`
-3. Activate through the 'Plugins' menu
-4. Go to 'Conflict Logger' in the admin menu
-
-### From WordPress.org
-Coming soon!
-
-## How It Works
-
-1. Plugin injects a lightweight error logger on all pages
-2. When a JavaScript error occurs, it's captured with context
-3. The plugin analyzes the error source to identify the suspected plugin
-4. Errors are stored locally and displayed in a clean dashboard
-
-## Requirements
-
-- WordPress 5.8+
-- PHP 7.4+
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+- `admin-conflict-logger.php` — plugin bootstrap: hooks, AJAX handlers, plugin/theme detection logic
+- `includes/admin-page.php` — dashboard template
+- `assets/js/error-logger.js` — error/rejection listener with debounce and dedup
+- `assets/js/admin.js` — dashboard interactions (refresh, clear, delete, stack-trace modal)
+- `assets/css/admin.css` — dashboard styling
 
 ## License
 
-GPL-2.0-or-later - see [LICENSE](https://www.gnu.org/licenses/gpl-2.0.html)
-
-## Author
-
-**Mor** - [GitHub](https://github.com/mortogo321) | [WordPress](https://profiles.wordpress.org/mortogo321/)
+GPL-2.0-or-later
