@@ -19,7 +19,7 @@ A WordPress plugin that demonstrates hook-based plugin architecture, secure AJAX
 ## Requirements
 
 - PHP 8.2+
-- WordPress 6.4+ (tested up to 6.9)
+- WordPress 6.4+ (tested up to 7.1)
 - MySQL 8.4 (Docker stacks) / any WP-supported database otherwise
 
 ## Quickstart
