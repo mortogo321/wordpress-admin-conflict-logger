@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.2"
+      - name: Validate composer
+        run: composer validate --strict
+      - name: PHP syntax
+        run: php -l admin-conflict-logger.php && php -l includes/admin-page.php && php -l uninstall.php
+      - name: Install PHP deps
+        run: composer install --no-interaction --no-progress
+      - name: PHPCS
+        run: vendor/bin/phpcs
+      - name: Install JS deps
+        run: bun install --frozen-lockfile
+      - name: Biome
+        run: bun run lint
+
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.2"
+      - name: Install PHP deps
+        run: composer install --no-interaction --no-progress
+      - name: PHPUnit
+        run: vendor/bin/phpunit
+      - name: Install JS deps
+        run: bun install --frozen-lockfile
+      - name: Vitest
+        run: bun run test
+
+  docker:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Build production image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: admin-conflict-logger:test
+      - name: Validate compose files
+        run: |
+          docker compose -f compose.dev.yml config --quiet
+          docker compose -f compose.yml config --quiet

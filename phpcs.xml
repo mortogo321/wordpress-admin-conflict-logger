@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ruleset name="AdminConflictLogger">
+    <description>WordPress Coding Standards for Admin Conflict Logger</description>
+    <rule ref="WordPress"/>
+    <!-- Main plugin bootstrap follows the wordpress.org file layout. -->
+    <rule ref="WordPress.Files.FileName">
+        <exclude-pattern>admin-conflict-logger.php</exclude-pattern>
+    </rule>
+    <!-- Plugin template: long HTML attribute lines are acceptable. -->
+    <rule ref="Generic.Files.LineLength">
+        <exclude-pattern>includes/admin-page.php</exclude-pattern>
+    </rule>
+    <!-- Known prefixes: ACL_ constants/functions and the main class. -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" value="acl,ACL,Admin_Conflict_Logger"/>
+        </properties>
+    </rule>
+    <file>admin-conflict-logger.php</file>
+    <file>includes/admin-page.php</file>
+    <file>uninstall.php</file>
+    <arg name="colors"/>
+    <arg value="p"/>
+    <arg name="extensions" value="php"/>
+</ruleset>

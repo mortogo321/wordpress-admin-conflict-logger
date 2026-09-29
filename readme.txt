@@ -1,10 +1,10 @@
 === Admin Conflict Logger ===
 Contributors: mortogo321
 Tags: debug, conflict, error, troubleshooting, developer
-Requires at least: 5.8
+Requires at least: 6.4
 Tested up to: 6.9
-Requires PHP: 7.4
-Stable tag: 1.0.0
+Requires PHP: 8.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,13 @@ Yes! It's designed for production use. Error logging only triggers when actual e
 3. Stack trace modal for detailed debugging
 
 == Changelog ==
+
+= 1.1.0 =
+* Requires PHP 8.2+ and WordPress 6.4+
+* Security: removed unauthenticated logging endpoint, added manage_options capability check and per-user rate limiting (20 events/min)
+* Server-side input caps (message 2000 / stack 10000 chars) with matching client-side truncation
+* UUID-based log IDs, uninstall cleanup, hardened dashboard escaping
+* Developer tooling: Composer + PHPUnit tests, Biome + Vitest JS tests, Docker images, CI
 
 = 1.0.0 =
 * Initial release
