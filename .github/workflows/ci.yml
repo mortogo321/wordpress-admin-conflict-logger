@@ -64,4 +64,4 @@ jobs:
       - name: Validate compose files
         run: |
           docker compose -f compose.dev.yml config --quiet
-          docker compose -f compose.yml config --quiet
+          MYSQL_ROOT_PASSWORD=dummy MYSQL_PASSWORD=dummy docker compose -f compose.yml config --quiet
