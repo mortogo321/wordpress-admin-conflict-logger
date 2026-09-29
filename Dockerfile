@@ -1,5 +1,5 @@
 # Production image: stock WordPress with this plugin pre-installed.
-FROM wordpress:6.9-php8.4-apache
+FROM wordpress:7.1-php8.4-apache
 
 LABEL org.opencontainers.image.title="Admin Conflict Logger (WordPress)" \
       org.opencontainers.image.description="WordPress with the Admin Conflict Logger plugin pre-installed" \
